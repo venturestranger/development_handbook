@@ -186,12 +186,12 @@ You can retrieve data by applying filters, which allow you to specify criteria f
 You can sort the data by passing field names along with sorting orders:
 
 - **Sorting syntax**: 
-  Example: `/api/rest/v1/users?age=12&sort=name$-1%surname$1` 
+  Example: `/api/rest/v1/users?age=12&sort=name$-1,surname$1` 
   Explanation:  
   - `name$-1`: Sorts by the `name` field in descending order.  
   - `surname$1`: Sorts by the `surname` field in ascending order.  
 
-The `sort` parameter accepts multiple fields, separated by `%`, each followed by `$1` (ascending) or `$-1` (descending).
+The `sort` parameter accepts multiple fields, separated by `,`, each followed by `$1` (ascending) or `$-1` (descending).
 
 
 
@@ -200,11 +200,11 @@ The `sort` parameter accepts multiple fields, separated by `%`, each followed by
 By default, every API request returns the complete model of the item. However, you can use projection to retrieve only specific fields of the model:
 
 - **Projection syntax**: 
-  Example: `/api/rest/v1/users?age=12&proj=name$surname` 
+  Example: `/api/rest/v1/users?age=12&proj=name,surname` 
   Explanation:  
   - Retrieves only the `id`, `name`, and `surname` fields for users matching the specified `age` filter.  
 
-The `proj` parameter allows you to list the desired fields, separated by `$`. This minimizes the data returned in the response, focusing only on the fields you need.
+The `proj` parameter allows you to list the desired fields, separated by `,`. This minimizes the data returned in the response, focusing only on the fields you need.
 
 
 
