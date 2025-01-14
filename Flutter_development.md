@@ -200,7 +200,7 @@ const int defaultTimeout = 5000;
 
 #### `/data/repositories/user_repository.dart`
 ```dart
-import '../../data/repositories/user_repository.dart';
+import '../../domain/repositories/user_repository.dart';
 
 class UserRepositoryImpl implements UserRepository {
   final UserService userService;
