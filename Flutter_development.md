@@ -198,8 +198,8 @@ const String apiBaseUrl = "https://api.example.com/";
 const int defaultTimeout = 5000;
 ```
 
-### `/data/repositories/user_repository.dart`
-```
+#### `/data/repositories/user_repository.dart`
+```dart
 import '../../data/repositories/user_repository.dart';
 
 class UserRepositoryImpl implements UserRepository {
