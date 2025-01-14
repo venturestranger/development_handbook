@@ -198,6 +198,22 @@ const String apiBaseUrl = "https://api.example.com/";
 const int defaultTimeout = 5000;
 ```
 
+### `/data/repositories/user_repository.dart`
+```
+import '../../data/repositories/user_repository.dart';
+
+class UserRepositoryImpl implements UserRepository {
+  final UserService userService;
+
+  UserRepositoryImpl(this.userService);
+
+  @override
+  Future<User> getUserById(String id) async {
+    ...
+  }
+}
+```
+
 #### `/domain/entities/user.dart`
 ```dart
 class User {
