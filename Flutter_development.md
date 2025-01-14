@@ -1,14 +1,14 @@
-# Frontend development guide
+# Frontend Development Guide
 
 ###### Outline:
 
-1. Hybrid folder hierarchy
-2. Folder content examples
-3. Explanatory pipeline
+1. Hybrid Folder Hierarchy
+2. Folder Content Examples
+3. Explanatory Pipeline
 
 
 
-## Hybrid folder hierarchy:
+## Hybrid Folder Hierarchy:
 
 ```
 lib/
@@ -49,7 +49,7 @@ lib/
 
 
 
-### Folder content examples:
+### Folder Content Examples:
 
 ---
 
@@ -273,7 +273,7 @@ const Color accentColor = Color(0xFF03DAC6);
 
 
 
-## Explanatory pipeline
+## Explanatory Pipeline
 
 Fetching user data from an API in a clean architecture involves a **sequence of actions** across different layers and components:
 
