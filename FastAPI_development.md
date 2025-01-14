@@ -5,8 +5,11 @@
 1. Folder Structure
 2. Headers for PUT and POST Requests
 3. Request Argument Guidelines
-4. Authorization Middleware
-5. Authorization Module
+4. Filters
+5. Sorting
+6. Projection
+7. Authorization Middleware
+8. Authorization Module
 
 
 
@@ -161,6 +164,47 @@ class Users:
   - Include all other data in the **JSON body** or **post-form** for file uploads.
 
 ---
+
+
+
+## Filters
+
+You can retrieve data by applying filters, which allow you to specify criteria for the fields and ranges of data:
+
+- **Field-specific filters**: 
+  Example: `/api/rest/v1/users?name=Jon&surname=Snow` 
+  Retrieves users with the specified `name` and `surname`.
+
+- **Range filters**: 
+  Example: `/api/rest/v1/users?age=12$24` 
+  Retrieves users within the age range of [12, 24].
+
+
+
+## Sorting
+
+You can sort the data by passing field names along with sorting orders:
+
+- **Sorting syntax**: 
+  Example: `/api/rest/v1/users?age=12&sort=name$-1%surname$1` 
+  Explanation:  
+  - `name$-1`: Sorts by the `name` field in descending order.  
+  - `surname$1`: Sorts by the `surname` field in ascending order.  
+
+The `sort` parameter accepts multiple fields, separated by `%`, each followed by `$1` (ascending) or `$-1` (descending).
+
+
+
+## Projection
+
+By default, every API request returns the complete model of the item. However, you can use projection to retrieve only specific fields of the model:
+
+- **Projection syntax**: 
+  Example: `/api/rest/v1/users?age=12&proj=name$surname` 
+  Explanation:  
+  - Retrieves only the `id`, `name`, and `surname` fields for users matching the specified `age` filter.  
+
+The `proj` parameter allows you to list the desired fields, separated by `$`. This minimizes the data returned in the response, focusing only on the fields you need.
 
 
 
