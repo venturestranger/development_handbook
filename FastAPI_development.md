@@ -188,7 +188,8 @@ async def auth_middleware_v1(request: Request, call_next_handler):
         action = request.url.path.split('/')[-1]
 
         if payload.get('iss') == config.TOKEN_ISSUER and (
-            action in payload.get('permissions', {}).get(method, []) or payload.get('role') == 'admin'
+          action in payload.get('acs', {}).get(method, []) or 
+          payload.get('lvl') == 'admin'
         ):
             return await call_next_handler(request)
         else:
