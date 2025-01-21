@@ -331,3 +331,36 @@ async def auth_middleware_v1(request: Request, call_next_handler):
   - At `register` - phone is already in use.
 
 `message` has the same content as of the status code (except for `refresh` endpoint)
+
+---
+
+## **Message Service**
+
+The **Message Service** is designed to handle messaging functionality, including sending verification codes via media agents (WhatsApp...), pushing notifications to APNs.
+
+### Components
+1. **Receiver**: A FastAPI-based service that handles incoming requests and processes data.
+2. **WhatsApp Agent**: Responsible for sending and managing messages through the WhatsApp platform.
+
+### Folder Structure
+
+```
+/root
+├── Main.py               # Entry point of the service
+├── /routers/v1/          # Handles request preprocessing
+├── /agents/v1/           # Core logic for message processing (e.g., WhatsApp, APN integration)
+│   │   ├─ /whatsapp/
+│   │   │   ├─ /__init__.py
+│   │   ├─ /apn/
+│   │   │   ├─ /__init__.py
+├── /middlewares/v1/      # Middleware for request handling (e.g., authentication, logging)
+├── /schemas/v1/          # Validation schemas for incoming requests
+├── /tmp/                 # Temporary files storage
+└── /cache/               # Cache storage for optimizing service performance
+```
+
+### Design Overview
+- **Routers**: Define preprocessing steps for incoming HTTP requests.
+- **Agents**: Implement post-processing and complex business logic, such as interacting with WhatsApp.
+- **Schemas**: Ensure validation of incoming data.
+
