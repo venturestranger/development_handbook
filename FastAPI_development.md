@@ -339,20 +339,25 @@ async def auth_middleware_v1(request: Request, call_next_handler):
 The **Message Service** is designed to handle messaging functionality, including sending verification codes via media agents (WhatsApp...), pushing notifications to APNs.
 
 ### Components
-1. **Receiver**: A FastAPI-based service that handles incoming requests and processes data.
-2. **WhatsApp Agent**: Responsible for sending and managing messages through the WhatsApp platform.
+1. **Rounter**: A FastAPI-based service that handles incoming requests and processes data.
+2. **Agents (WhatsApp, APN)**: Responsible for sending and managing messages through specific channels.
 
 ### Folder Structure
 
 ```
 /root
-├── Main.py               # Entry point of the service
+├── main.py               # Entry point of the service
+├── config.py             # Defines service configuration
 ├── /routers/v1/          # Handles request preprocessing
+│   │   ├── /verification
+│   │   │   ├── /__init__.py
+│   │   ├── /notification
+│   │   │   ├── /__init__.py
 ├── /agents/v1/           # Core logic for message processing (e.g., WhatsApp, APN integration)
-│   │   ├─ /whatsapp/
-│   │   │   ├─ /__init__.py
-│   │   ├─ /apn/
-│   │   │   ├─ /__init__.py
+│   │   ├── /whatsapp/
+│   │   │   ├── /__init__.py
+│   │   ├── /apn/
+│   │   │   ├── /__init__.py
 ├── /middlewares/v1/      # Middleware for request handling (e.g., authentication, logging)
 ├── /schemas/v1/          # Validation schemas for incoming requests
 ├── /tmp/                 # Temporary files storage
@@ -360,7 +365,7 @@ The **Message Service** is designed to handle messaging functionality, including
 ```
 
 ### Design Overview
-- **Routers**: Define preprocessing steps for incoming HTTP requests.
+- **Routers**: Define preprocessing steps for incoming notification and verification HTTP requests.
 - **Agents**: Implement post-processing and complex business logic, such as interacting with WhatsApp.
 - **Schemas**: Ensure validation of incoming data.
 
