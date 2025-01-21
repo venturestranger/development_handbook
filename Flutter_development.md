@@ -490,3 +490,132 @@ class UserPage extends StatelessWidget {
 4. **Return to Presentation Layer**:
    - The `GetUserUseCase` returns the `User` entity to the ViewModel/Controller.
    - The ViewModel updates the UI state with the fetched data.
+
+---
+
+## Application State Management
+
+Application uses four technologies to manage state and handle both cached and temporary data, such as user-related information, tokens, and preferences.
+
+### Overview
+
+1. **Provider**  
+   - **Type**: In-memory, temporary storage.
+   - **Purpose**: To manage in-session variables and buffers that need to trigger UI updates.
+   - **Use Cases**: Managing application state throughout the session (e.g., user authentication state, theme settings).
+   - **Example**: Changing the app's theme mode (light/dark) or monitoring user login status.
+
+2. **Secure Storage**  
+   - **Type**: On-disk, secured, persistent storage.
+   - **Purpose**: To store sensitive data like tokens and authorization information securely.
+   - **Use Cases**: Saving user authentication tokens or other private data that must persist across sessions.
+
+3. **Hive**  
+   - **Type**: On-disk, persistent storage.
+   - **Purpose**: To store complex data structures and cache API responses locally.
+   - **Use Cases**: Saving user profiles, lists, or other objects that require structured storage.
+   - **Example**: Caching API data for offline access or storing user details.
+
+4. **SharedPreferences**  
+   - **Type**: On-disk, persistent storage.
+   - **Purpose**: To store simple key-value pairs, such as user preferences and environment settings.
+   - **Use Cases**: Storing theme mode, language preferences, or flags indicating tutorial completion.
+   - **Example**: Saving the user's preferred language or app theme.
+
+### When to Use Each Technology
+
+#### **Provider**
+- Best for temporary, in-memory state management.
+- Triggers reactive UI updates when state changes.
+- Ideal for managing data that is only relevant during the app session.
+
+#### **Secure Storage**
+- Use for sensitive, persistent data that must remain secure.
+- Ensures that tokens and authorization information are encrypted on disk.
+
+#### **Hive**
+- Use for local persistent storage of complex data structures.
+- Suitable for storing small to medium-sized data that needs to persist across app restarts.
+- Efficient for offline data caching and quick retrieval.
+
+#### **SharedPreferences**
+- Best for simple key-value pairs, such as user preferences or environmental flags.
+- Lightweight and straightforward for basic storage needs.
+
+### Practical Examples
+
+1. **SharedPreferences**: Store simple user preferences.
+   - Example: "Save the app theme mode (light or dark)."
+
+2. **Hive**: Store complex or cached data.
+   - Example: "Save a user's profile details or a list of items retrieved from an API."
+
+3. **Secure Storage**: Store sensitive data securely.
+   - Example: "Save the user's login token."
+
+4. **Provider**: Manage temporary in-session states.
+   - Example: "Track whether the user is logged in and update the UI accordingly."
+
+## Summary
+
+- Use **SharedPreferences** for lightweight, simple key-value storage (e.g., theme mode, language settings).
+- Use **Hive** for complex data structures and offline caching (e.g., user profiles, cached API responses).
+- Use **Secure Storage** for securely storing sensitive data (e.g., tokens, authentication details).
+- Use **Provider** for managing temporary, reactive state that needs to update the UI (e.g., app-wide state like login status or theme settings).
+
+```dart
+import 'package:hive/hive.dart';
+import 'package:hive_flutter/hive_flutter.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
+// Setup Flutter Secure Storage and Hive
+final FlutterSecureStorage secureStorage = FlutterSecureStorage();
+
+Future<void> initApp() async {
+  await Hive.initFlutter();
+  await Hive.openBox('sharedBox');
+}
+
+Future<void> saveSharedPreferences(String key, String value) async {
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  await prefs.setString(key, value);
+}
+
+Future<String?> getSharedPreferences(String key) async {
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  return prefs.getString(key);
+}
+
+Future<void> deleteSharedPreferences(String key) async {
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  await prefs.remove(key);
+}
+
+Future<void> saveSecureData(String key, String value) async {
+  await secureStorage.write(key: key, value: value);
+}
+
+Future<String?> getSecureData(String key) async {
+  return await secureStorage.read(key: key);
+}
+
+Future<void> deleteSecureData(String key) async {
+  await secureStorage.delete(key: key);
+}
+
+Future<void> saveToHive(String key, String value) async {
+  var box = await Hive.openBox('sharedBox');
+  await box.put(key, value);
+}
+
+Future<String?> getFromHive(String key) async {
+  var box = await Hive.openBox('sharedBox');
+  return box.get(key);
+}
+
+Future<void> deleteFromHive(String key) async {
+  var box = await Hive.openBox('sharedBox');
+  await box.delete(key);
+}
+```
