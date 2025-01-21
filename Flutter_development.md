@@ -505,22 +505,22 @@ Application uses four technologies to manage state and handle both cached and te
    - **Use Cases**: Managing application state throughout the session (e.g., user authentication state, theme settings).
    - **Example**: Changing the app's theme mode (light/dark) or monitoring user login status.
 
-2. **Secure Storage**  
-   - **Type**: On-disk, secured, persistent storage.
-   - **Purpose**: To store sensitive data like tokens and authorization information securely.
-   - **Use Cases**: Saving user authentication tokens or other private data that must persist across sessions.
-
-3. **Hive**  
-   - **Type**: On-disk, persistent storage.
-   - **Purpose**: To store complex data structures and cache API responses locally.
-   - **Use Cases**: Saving user profiles, lists, or other objects that require structured storage.
-   - **Example**: Caching API data for offline access or storing user details.
-
-4. **SharedPreferences**  
+2. **SharedPreferences**  
    - **Type**: On-disk, persistent storage.
    - **Purpose**: To store simple key-value pairs, such as user preferences and environment settings.
    - **Use Cases**: Storing theme mode, language preferences, or flags indicating tutorial completion.
    - **Example**: Saving the user's preferred language or app theme.
+
+3. **Secure Storage**  
+   - **Type**: On-disk, secured, persistent storage.
+   - **Purpose**: To store sensitive data like tokens and authorization information securely.
+   - **Use Cases**: Saving user authentication tokens or other private data that must persist across sessions.
+
+4. **Hive**  
+   - **Type**: On-disk, persistent storage.
+   - **Purpose**: To store complex data structures and cache API responses locally.
+   - **Use Cases**: Saving user profiles, lists, or other objects that require structured storage.
+   - **Example**: Caching API data for offline access or storing user details.
 
 ### When to Use Each Technology
 
@@ -528,6 +528,10 @@ Application uses four technologies to manage state and handle both cached and te
 - Best for temporary, in-memory state management.
 - Triggers reactive UI updates when state changes.
 - Ideal for managing data that is only relevant during the app session.
+
+#### **SharedPreferences**
+- Best for simple key-value pairs, such as user preferences or environmental flags.
+- Lightweight and straightforward for basic storage needs.
 
 #### **Secure Storage**
 - Use for sensitive, persistent data that must remain secure.
@@ -538,23 +542,19 @@ Application uses four technologies to manage state and handle both cached and te
 - Suitable for storing small to medium-sized data that needs to persist across app restarts.
 - Efficient for offline data caching and quick retrieval.
 
-#### **SharedPreferences**
-- Best for simple key-value pairs, such as user preferences or environmental flags.
-- Lightweight and straightforward for basic storage needs.
-
 ### Practical Examples
 
-1. **SharedPreferences**: Store simple user preferences.
+1. **Provider**: Manage temporary in-session states.
+   - Example: "Track whether the user is logged in and update the UI accordingly."
+  
+2. **SharedPreferences**: Store simple user preferences.
    - Example: "Save the app theme mode (light or dark)."
-
-2. **Hive**: Store complex or cached data.
-   - Example: "Save a user's profile details or a list of items retrieved from an API."
 
 3. **Secure Storage**: Store sensitive data securely.
    - Example: "Save the user's login token."
 
-4. **Provider**: Manage temporary in-session states.
-   - Example: "Track whether the user is logged in and update the UI accordingly."
+4. **Hive**: Store complex or cached data.
+   - Example: "Save a user's profile details or a list of items retrieved from an API."
 
 ## Summary
 
