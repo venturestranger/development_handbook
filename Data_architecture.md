@@ -56,20 +56,6 @@ Parts of non-embedded models (are accessable from a single context \ are associa
 }
 ```
 
-#### **Wallet Model** (Tokenized \ Encrypted, Embedded)
-
-```json
-{
-  "id": "UUID",
-  "user_id": "UUID",
-  "number_obfuscated": "str (a few characters replaced with '*')",
-  "number_encrypted": "str",
-  "name": "str",
-  "expiration": "str",
-  "code": "str"
-}
-```
-
 #### **Address Model** (Tokenized \ Encrypted, Embedded)
 
 ```json
@@ -226,3 +212,16 @@ Independent models (can be accessed from different context \ are not associated 
 }
 ```
 
+#### **Wallet Model** (Tokenized \ Encrypted, Embedded)
+
+```json
+{
+  "id": "UUID",
+  "user_id": "UUID",
+  "number_obfuscated": "str (a few characters replaced with '*')",
+  "number_encrypted": "str",
+  "name": "str",
+  "expiration": "str",
+  "code": "str"
+}
+```
