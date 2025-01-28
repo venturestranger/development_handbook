@@ -245,8 +245,6 @@ async def auth_middleware_v1(request: Request, call_next_handler):
 
 ---
 
-
-
 ## **Authorization Module**
 
 ### **Access vs. Refresh Tokens**
@@ -334,8 +332,6 @@ async def auth_middleware_v1(request: Request, call_next_handler):
 
 ---
 
-# README
-
 ## **Asset Service**
 
 The **Asset Service** manages all uploaded files and supports the following operations:  
@@ -419,7 +415,3 @@ The **Streaming Service** handles WebSocket connections and provides real-time c
 4. **Status Code Specification**:  
    - This service does not return traditional HTTP status codes as it operates via WebSockets.  
    - Invalid connections are handled by disconnecting clients.  
-
----
-
-Each service is designed for clarity, scalability, and efficiency, with clear separation of concerns and modularity across the architecture.
