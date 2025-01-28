@@ -334,38 +334,92 @@ async def auth_middleware_v1(request: Request, call_next_handler):
 
 ---
 
+# README
+
+## **Asset Service**
+
+The **Asset Service** manages all uploaded files and supports the following operations:  
+- **GET**: Retrieve a file by its ID.  
+- **POST**: Upload a file and receive a file ID.  
+- **DELETE**: Remove a file by its ID.  
+ 
+**API Specifications**:  
+- **GET**:  
+  Consumes an HTTP request with a query parameter `id` (file ID).  
+- **POST**:  
+  Consumes a form-data HTTP request with the file attached and returns a JSON response:  
+  ```json
+  { "id": "unique-file-id" }
+  ```
+- **DELETE**:  
+  Consumes an HTTP request with a query parameter `id` (file ID) to delete the file.
+
+**Status Codes**:  
+- `403`: Unauthorized (e.g., invalid token).  
+- `422`: Unprocessable Entity (e.g., invalid file format or size).  
+- `200`: OK (operation completed successfully).  
+- `503`: Internal error (e.g., unexpected failure).
+
+---
+
 ## **Message Service**
 
-The **Message Service** is designed to handle messaging functionality, including sending verification codes via media agents (WhatsApp...), pushing notifications to APNs.
+The **Message Service** is responsible for:  
+1. **Sending Push Notifications**: Using Firebase Cloud Messaging.  
+2. **Sending Verification Codes**: Through WhatsApp and Telegram.
 
-### Components
-1. **Rounter**: A FastAPI-based service that handles incoming requests and processes data.
-2. **Agents (WhatsApp, APN)**: Responsible for sending and managing messages through specific channels.
+### **Architectural Design**  
+- **Agents Directory**:  
+  Located at `/agents/v1` and contains the following folders:  
+  - `/telegram`: Implements `TelegramAgent` for sending verification codes via Telegram.  
+  - `/whatsapp`: Implements `WhatsappAgent` for sending verification codes via WhatsApp.  
+  - `/firebase`: Implements `FirebaseAgent` for pushing notifications.  
 
-### Folder Structure
+- Each agent:  
+  - Implements a method to send notifications or verification codes via its corresponding API.  
+  - Listens to RabbitMQ signals, as defined in `/functional/v1`.  
+  - Can also be manually triggered via handlers.
 
-```
-/root
-├── main.py               # Entry point of the service
-├── config.py             # Defines service configuration
-├── /routers/v1/          # Handles request preprocessing
-│   │   ├── /verification
-│   │   │   ├── /__init__.py
-│   │   ├── /notification
-│   │   │   ├── /__init__.py
-├── /agents/v1/           # Core logic for message processing (e.g., WhatsApp, APN integration)
-│   │   ├── /whatsapp/
-│   │   │   ├── /__init__.py
-│   │   ├── /apn/
-│   │   │   ├── /__init__.py
-├── /middlewares/v1/      # Middleware for request handling (e.g., authentication, logging)
-├── /schemas/v1/          # Validation schemas for incoming requests
-├── /tmp/                 # Temporary files storage
-└── /cache/               # Cache storage for optimizing service performance
-```
+- **Router Preprocessing**:  
+  Endpoints are preprocessed in `/router/v1` before being passed to handlers.
 
-### Design Overview
-- **Routers**: Define preprocessing steps for incoming notification and verification HTTP requests.
-- **Agents**: Implement post-processing and complex business logic, such as interacting with WhatsApp.
-- **Schemas**: Ensure validation of incoming data.
+### **API Endpoints**  
+- **POST Requests**:  
+  - **Request Body**:  
+    ```json
+    { 
+      "id": "user-identifier",
+      "message": "message-content"
+    }
+    ```  
+  - **Status Codes**:  
+    - `403`: Unauthorized (e.g., invalid token).  
+    - `422`: Unprocessable Entity (e.g., invalid request format).  
+    - `200`: OK (operation completed successfully).  
+    - `503`: Internal error (e.g., unsuccessful operation).
 
+---
+
+## **Streaming Service**
+
+The **Streaming Service** handles WebSocket connections and provides real-time communication capabilities.  
+### **Key Features**  
+1. **WebSocket Support**:  
+   - Handles WebSocket connections for chat communication.  
+   - Sends messages in real-time to users specified in RabbitMQ messages.
+
+2. **Directory Organization**:  
+   - **Handlers**: Located in `/handlers/v1`, where the WebSocket logic is implemented.  
+   - **Routers**: Located in `/routers/v1`, responsible for preprocessing and handling HTTP requests.  
+   - **RabbitMQ Listener**: Defined in `/functional/v1`, listens for messages and triggers the appropriate handlers.
+
+3. **WebSocket Message Format**:  
+   - Follows the model architecture specified in the documentation.  
+
+4. **Status Code Specification**:  
+   - This service does not return traditional HTTP status codes as it operates via WebSockets.  
+   - Invalid connections are handled by disconnecting clients.  
+
+---
+
+Each service is designed for clarity, scalability, and efficiency, with clear separation of concerns and modularity across the architecture.
